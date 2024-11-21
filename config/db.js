@@ -5,5 +5,5 @@ const connection = mongoose.createConnection('mongodb://localhost:27017/db_softw
 }).on('error',()=>{
     console.log("MongoDb connecttion error");
 });
-
+//malak
 module.exports = connection;
