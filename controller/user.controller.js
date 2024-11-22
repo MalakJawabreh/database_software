@@ -40,10 +40,10 @@ exports.login = async (req, res, next) => {
             throw new Error('Password Invalid');
         }
 
-        let tokenData = {_id:user._id,email:user.email,role:user.role};
+        let tokenData = {_id:user._id,email:user.email,role:user.role,fullName:user.fullName};
         const token = await UserServices.generateToken(tokenData,'secretKey','1h')
 
-        res.status(200).json({status:true,token:token, role: user.role });
+        res.status(200).json({status:true,token:token, role: user.role ,fullName:user.fullName });
 
     } 
     catch (error) {
