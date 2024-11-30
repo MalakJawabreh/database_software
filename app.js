@@ -1,12 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const body_parser = require('body-parser');
-const userRouter  = require ('./routers/user.routers');
+const userRouter = require('./routers/user.routers');
+const tripDriverRouter = require('./routers/tripD.router');
+const TripServices = require('./services/tripD.services');
 
+const app = express();
 
-const app=express();
+// Middleware
 app.use(body_parser.json());
 app.use(cors());
-app.use('/',userRouter);
-//aya awwad test new!
-module.exports=app;
+
+// ربط المسارات
+app.use('/', userRouter); // المستخدمين
+app.use('/', tripDriverRouter); // الرحلات
+
+
+
+module.exports = app;
