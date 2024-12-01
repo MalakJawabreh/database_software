@@ -3,7 +3,15 @@ const db = require('../config/db');
 const { Schema } = mongoose;
 
 const tripSchema = new Schema({
+    name:{
+        type: String,
+        required: true,
+    },
     driverEmail: {
+        type: String,
+        required: true,
+    },
+    phoneNumber : {
         type: String,
         required: true,
     },
