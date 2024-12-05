@@ -12,7 +12,6 @@ const getAllBookings = async () => {
 };
 
 
-
 module.exports = {
     createBooking,
     getAllBookings,

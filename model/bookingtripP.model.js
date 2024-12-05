@@ -49,7 +49,6 @@ const booktripSchema = new Schema({
     },
     Note: {
         type: String,
-        required: true,
     },
     seat: {
         type: Number,
