@@ -63,4 +63,37 @@ exports.getAllTrips = async (req, res) => {
 
 //new
 
+exports.getFilteredTrips = async (req, res) => {
+    try {
+        const { from, to, filterOption, filterValue, maxPrice } = req.query;
 
+        // التحقق من إدخال from و to
+        if (!from || !to) {
+            return res.status(400).json({ status: false, error: "Both 'from' and 'to' fields are required." });
+        }
+
+        // إعداد الفلتر الأساسي
+        const filter = { from, to };
+
+        // تطبيق نوع الفلتر
+        if (filterOption === 'Price' && maxPrice) {
+            filter.price = { $lte: Number(maxPrice) }; // السعر أقل من أو يساوي
+        } else if (filterOption === 'Car Type' && filterValue) {
+            filter.carType = filterValue; // نوع السيارة
+        } else if (filterOption === 'Time' && filterValue) {
+            filter.time = filterValue; // وقت الرحلة
+        } else if (filterOption === 'Date' && filterValue) {
+            filter.date = filterValue; // تاريخ الرحلة
+        } else if (filterOption === 'Driver Rating' && filterValue) {
+            filter.driverRating = { $gte: Number(filterValue) }; // تقييم السائق أكبر من أو يساوي
+        }
+
+        // جلب النتائج بناءً على الفلتر
+        const trips = await TripServices.getAllTrips(filter);
+
+        res.status(200).json({ status: true, trips });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};

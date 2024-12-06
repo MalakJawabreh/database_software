@@ -67,6 +67,23 @@ static async getAllTrips() {
     }
 }
 
+static async getAllTrips(filter = {}) {
+    try {
+        // إذا كانت filter فارغة، سيتم إرجاع جميع الرحلات
+        if (Object.keys(filter).length === 0) {
+            return await TripModel.find();
+        }
+
+        // تطبيق الفلترة بناءً على المدخلات (مثل السعر، التاريخ، الحالة)
+        const trips = await TripModel.find(filter);
+
+        return trips;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 
 
     
