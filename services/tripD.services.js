@@ -74,3 +74,4 @@ static async getAllTrips() {
 }
 
 module.exports = TripServices;
+//new

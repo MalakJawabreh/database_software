@@ -48,3 +48,5 @@ const tripSchema = new Schema({
 
 const TripModel = db.model('TripDriver', tripSchema);
 module.exports = TripModel;
+
+//new

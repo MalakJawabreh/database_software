@@ -14,3 +14,4 @@ router.delete('/delete_trip/:id', TripController.deleteTrip);
 router.get('/all_trip', TripController.getAllTrips);
 
 module.exports = router;
+//new

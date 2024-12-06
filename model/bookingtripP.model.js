@@ -58,3 +58,5 @@ const booktripSchema = new Schema({
 
 const bookTripModel = db.model('BookTrip', booktripSchema);
 module.exports = bookTripModel;
+
+//new

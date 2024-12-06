@@ -16,3 +16,4 @@ module.exports = {
     createBooking,
     getAllBookings,
 };
+//new
