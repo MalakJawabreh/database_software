@@ -54,6 +54,8 @@ const booktripSchema = new Schema({
         type: Number,
         required: true,
     },
+ 
+
 });
 
 const bookTripModel = db.model('BookTrip', booktripSchema);

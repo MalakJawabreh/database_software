@@ -59,13 +59,13 @@ static async deleteTrip(id) {
 }
 
 // إضافة دالة لجلب جميع الرحلات لجميع السائقين
-static async getAllTrips() {
+/*static async getAllTrips() {
     try {
         return await TripModel.find(); // جلب جميع الرحلات من قاعدة البيانات
     } catch (error) {
         throw error;
     }
-}
+}*/
 
 static async getAllTrips(filter = {}) {
     try {
