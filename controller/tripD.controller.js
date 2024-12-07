@@ -66,7 +66,7 @@ exports.getAllTrips = async (req, res) => {
 exports.getFilteredTrips = async (req, res) => {
     try {
         const { from, to, filterOption, filterValue, maxPrice } = req.query;
-
+       //const { from, to, filterOption, filterValue, maxPrice } = req.body;
         // التحقق من إدخال from و to
         if (!from || !to) {
             return res.status(400).json({ status: false, error: "Both 'from' and 'to' fields are required." });
@@ -79,7 +79,7 @@ exports.getFilteredTrips = async (req, res) => {
         if (filterOption === 'Price' && maxPrice) {
             filter.price = { $lte: Number(maxPrice) }; // السعر أقل من أو يساوي
         } else if (filterOption === 'Car Type' && filterValue) {
-            filter.carType = filterValue; // نوع السيارة
+            filter.carBrand = filterValue; // نوع السيارة
         } else if (filterOption === 'Time' && filterValue) {
             filter.time = filterValue; // وقت الرحلة
         } else if (filterOption === 'Date' && filterValue) {

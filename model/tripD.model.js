@@ -34,16 +34,33 @@ const tripSchema = new Schema({
     date: {
         type: Date,
         required: true,
+        validate: {
+            validator: (value) => value >= new Date(),
+            message: 'Date must be in the future.',
+        },
     },
     time: {
         type: String,
         required: true,
     },
+    carBrand: {
+        type: String,
+        required: false, // إذا كان غير مطلوب
+    },
+    driverRating: {
+        type: Number,
+        required: false, // اجعله غير مطلوب في البداية إذا لم يكن موجودًا
+        min: 0,
+        max: 5,
+    },
+    
     status_trip: {
         type: String,
         enum: ['upcoming', 'completed', 'cancelled'],
         required: true,
+        default: 'upcoming',
     },
+    
 });
 
 const TripModel = db.model('TripDriver', tripSchema);
