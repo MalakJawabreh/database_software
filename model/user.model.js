@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
+    profilePicture: {
+        type: String, // Use a string URL to store the image URL.
+        required: false // You may want to make this optional if not all users will have a profile picture.
+    },
     fullName: {
         type: String,
         required: true
@@ -31,6 +35,14 @@ const userSchema = new Schema({
         type: String,
         enum: ['Passenger', 'Driver', 'Service Provider'],
         required: true
+    },
+    licensePicture: {
+        type: String, // Use a string URL to store the image URL.
+        required: false // You may want to make this optional if not all users will have a profile picture.
+    },
+    InsurancePicture:{
+        type: String, // Use a string URL to store the image URL.
+        required: false // You may want to make this optional if not all users will have a profile picture.
     },
     carNumber: {
         type: String,
