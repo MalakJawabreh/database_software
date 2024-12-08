@@ -3,29 +3,40 @@ const db = require('../config/db');
 const { Schema } = mongoose;
 
 const booktripSchema = new Schema({
-    nameP:{
+    nameP: {
         type: String,
         required: true,
+        trim: true, // إزالة الفراغات الزائدة
     },
     EmailD: {
         type: String,
         required: true,
+        lowercase: true,
+        match: [/^\S+@\S+\.\S+$/, 'Invalid email address'], // التحقق من صيغة البريد الإلكتروني
     },
-    nameD:{
+    nameD: {
         type: String,
         required: true,
+        trim: true,
     },
     EmailP: {
         type: String,
         required: true,
+        lowercase: true,
+        match: [/^\S+@\S+\.\S+$/, 'Invalid email address'], // التحقق من صيغة البريد الإلكتروني
     },
-    phoneNumberP : {
+    phoneNumberP: {
         type: String,
         required: true,
-    },
-    phoneNumberD : {
+        unique: true,
+        match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'], // الصيغة الدولية والمحلية
+    }
+    ,
+    phoneNumberD: {
         type: String,
         required: true,
+        unique: true,
+        match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'], // الصيغة الدولية والمحلية
     },
     from: {
         type: String,
@@ -38,10 +49,15 @@ const booktripSchema = new Schema({
     price: {
         type: Number,
         required: true,
+        min: [0, 'Price must be a positive value'], // السعر يجب أن يكون موجبًا
     },
     date: {
         type: Date,
         required: true,
+        validate: {
+            validator: (value) => value >= new Date(),
+            message: 'Date must be in the future.', // التحقق من أن التاريخ في المستقبل
+        },
     },
     time: {
         type: String,
@@ -49,10 +65,12 @@ const booktripSchema = new Schema({
     },
     Note: {
         type: String,
+        maxlength: [500, 'Note cannot exceed 500 characters'], // قيود على طول النص
     },
     seat: {
         type: Number,
         required: true,
+        min: [1, 'Seat number must be at least 1'], // عدد المقاعد يجب أن يكون 1 على الأقل
     },
  
 
