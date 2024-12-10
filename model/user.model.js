@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const { Schema } = mongoose;
-
+ 
 const userSchema = new Schema({
     profilePicture: {
         type: String, // Use a string URL to store the image URL.
@@ -32,7 +32,7 @@ const userSchema = new Schema({
     phoneNumber: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'], // الصيغة الدولية والمحلية
     },
     
@@ -92,11 +92,11 @@ userSchema.methods.comparePassword = async function (userPassword) {
     }
 };
 
-// التحقق من رقم الهاتف الفريد
-userSchema.path('phoneNumber').validate(async function (value) {
-    const count = await this.model('User').countDocuments({ phoneNumber: value });
-    return count === 0;
-}, 'Phone number already exists');
+// // التحقق من رقم الهاتف الفريد
+// userSchema.path('phoneNumber').validate(async function (value) {
+//     const count = await this.model('User').countDocuments({ phoneNumber: value });
+//     return count === 0;
+// }, 'Phone number already exists');
 
 const UserModel = db.model('User', userSchema);
 module.exports = UserModel;

@@ -39,23 +39,35 @@ const createBooking = async (data) => {
         throw new Error("Trip not found.");
     }
 
-    // التحقق من المقاعد المتاحة مقارنة بـ maxPassengers
-    const bookingsOnSameTrip = await BookTrip.find({
-        from: data.from,
-        to: data.to,
-        date: data.date,
-        time: data.time
-    });
+    console.log("Before updating currentPassengers:", tripDetails.currentPassengers);
 
-    const totalSeatsBooked = bookingsOnSameTrip.reduce((total, booking) => total + booking.seat, 0);
-
-    if (totalSeatsBooked + data.seat > tripDetails.maxPassengers) {
+    if (tripDetails.currentPassengers + data.seat > tripDetails.maxPassengers) {
         throw new Error(`No available seats for this trip. Maximum capacity is ${tripDetails.maxPassengers} passengers.`);
     }
+    else
+    {
+    tripDetails.currentPassengers += data.seat;
+    
+    }
+    console.log("After updating currentPassengers:", tripDetails.currentPassengers);
+    await tripDetails.save();
 
-    // إنشاء الحجز الجديد
     const newBooking = new BookTrip(data);
     return await newBooking.save();
+};
+
+
+// الحصول على الركاب الحاجزين لرحلة معينة
+const getPassengersByTrip = async (driverEmail, from, to, date, time) => {
+    // التحقق من وجود الرحلة أولاً
+    const trip = await TripModel.findOne({ driverEmail, from, to, date, time });
+    if (!trip) {
+        throw new Error("Trip not found.");
+    }
+
+    // جلب الحجوزات المرتبطة بهذه الرحلة
+    const passengers = await BookTrip.find({ from, to, date, time });
+    return passengers; // تعيد أسماء ومعلومات الركاب
 };
 
 // الحصول على جميع الحجوزات
@@ -66,4 +78,5 @@ const getAllBookings = async () => {
 module.exports = {
     createBooking,
     getAllBookings,
+    getPassengersByTrip
 };

@@ -16,8 +16,12 @@ const tripSchema = new Schema({
     phoneNumber: {
         type: String,
         required: true,
-        unique: true,
         match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'], // الصيغة الدولية والمحلية
+    },
+    currentPassengers: {
+        type: Number,
+        default: 0,
+        min: [0, 'Current passengers cannot be negative.'], // يجب ألا يكون سالبًا
     },
     from: {
         type: String,

@@ -3,13 +3,13 @@ const TripServices = require('../services/tripD.services');
 // إنشاء رحلة جديدة
 exports.createTrip = async (req, res) => {
     try {
-        const { name ,driverEmail,phoneNumber, from, to, price, maxPassengers, date, time } = req.body;
+        const { name ,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time } = req.body;
 
         if (!name|| !driverEmail ||!phoneNumber|| !from || !to || !price || !maxPassengers || !date || !time) {
             return res.status(400).json({ status: false, error: "All fields are required." });
         }
 
-        const trip = await TripServices.createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers, date, time);
+        const trip = await TripServices.createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time);
         res.status(200).json({ status: true, trip });
     } catch (error) { 
         console.error(error);

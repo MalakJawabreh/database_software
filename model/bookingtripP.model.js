@@ -28,14 +28,12 @@ const booktripSchema = new Schema({
     phoneNumberP: {
         type: String,
         required: true,
-        unique: true,
         match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'], // الصيغة الدولية والمحلية
     }
     ,
     phoneNumberD: {
         type: String,
         required: true,
-        unique: true,
         match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'], // الصيغة الدولية والمحلية
     },
     from: {
