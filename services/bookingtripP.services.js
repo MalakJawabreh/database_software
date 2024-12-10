@@ -75,8 +75,17 @@ const getAllBookings = async () => {
     return await BookTrip.find();
 };
 
+const getBookingsByEmail2 = async (EmailP) => {
+    try{
+    return await BookTrip.find({ EmailP: EmailP }); }
+    catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     createBooking,
     getAllBookings,
-    getPassengersByTrip
+    getPassengersByTrip,
+    getBookingsByEmail2,
 };
