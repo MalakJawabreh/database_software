@@ -3,7 +3,7 @@ const moment = require('moment'); // للتعامل مع التواريخ وال
 
 class TripServices {
     // إنشاء رحلة جديدة
-    static async createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time) {
+    static async createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand) {
         try {
             const currentDateTime = moment();
             const tripDateTime = moment(`${date} ${time}`, 'YYYY-MM-DD hh:mmA');
@@ -22,14 +22,15 @@ class TripServices {
                 maxPassengers,
                 currentPassengers,
                 date,
-                time
+                time,
+                carBrand
             });
 
             if (isDuplicate) {
                 throw new Error('This trip already exists.');
             }
 
-            const tripData = { name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time, status_trip };
+            const tripData = { name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand, status_trip };
             const newTrip = new TripModel(tripData);
             return await newTrip.save();
         } catch (error) {
