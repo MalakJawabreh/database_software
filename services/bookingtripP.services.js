@@ -83,9 +83,37 @@ const getBookingsByEmail2 = async (EmailP) => {
     }
 };
 
+// حذف حجز معين
+const cancelBooking = async (bookingId) => {
+    // العثور على الحجز
+    const booking = await BookTrip.findById(bookingId);
+    if (!booking) {
+        throw new Error("Booking not found.");
+    }
+
+    // العثور على الرحلة المقابلة
+    const trip = await TripModel.findOne({
+        from: booking.from,
+        to: booking.to,
+        date: booking.date,
+        time: booking.time
+    });
+
+    if (trip) {
+        // تقليل عدد الركاب الحاليين في الرحلة
+        trip.currentPassengers -= booking.seat;
+        await trip.save();
+    }
+
+    // حذف الحجز
+    await BookTrip.findByIdAndDelete(bookingId);
+    return { status: true, message: "Booking canceled successfully." };
+};
+
 module.exports = {
     createBooking,
     getAllBookings,
     getPassengersByTrip,
     getBookingsByEmail2,
+    cancelBooking
 };

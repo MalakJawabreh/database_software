@@ -52,27 +52,27 @@ const getPassengersByTrip = async (req, res) => {
     }
 };
 
-// const cancelBooking = async (req, res) => {
-//     try {
-//         const { bookingId } = req.params;
-//         if (!bookingId) {
-//             return res.status(400).json({ message: "Booking ID is required." });
-//         }
+// إلغاء حجز معين
+const cancelBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ status: false, error: "Booking ID is required." });
+        }
 
-//         const result = await bookTripService.cancelBooking(bookingId);
-//         res.status(200).json(result);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
- 
-
+        const response = await bookTripService.cancelBooking(id);
+        res.status(200).json(response);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
 
 module.exports = {
     createBooking,
     getAllBookings,
     getBookingsByEmail,
-    getPassengersByTrip
-    //cancelBooking,
+    getPassengersByTrip,
+    cancelBooking
 };
 //new

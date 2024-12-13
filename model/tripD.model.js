@@ -55,7 +55,7 @@ const tripSchema = new Schema({
     },
     carBrand: {
         type: String,
-        required: true, // إذا كان غير مطلوب
+        required: false, // إذا كان غير مطلوب
     },
     driverRating: {
         type: Number,

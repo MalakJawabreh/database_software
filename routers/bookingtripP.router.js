@@ -12,5 +12,7 @@ router.get('/Bookung_emailP', bookTripController.getBookingsByEmail);
 
 router.get('/passengers', bookTripController.getPassengersByTrip);
 
+router.delete('/delete_book/:id', bookTripController.cancelBooking);
+
 //new
 module.exports = router;
