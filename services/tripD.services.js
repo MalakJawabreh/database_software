@@ -1,4 +1,5 @@
 const TripModel = require('../model/tripD.model');
+const BookTrip= require('../model/bookingtripP.model');
 const moment = require('moment'); // للتعامل مع التواريخ والأوقات
 
 class TripServices {
@@ -48,17 +49,43 @@ class TripServices {
     }
 
     // إضافة دالة لحذف رحلة بناءً على الـ id
+// static async deleteTrip(id) {
+//     try {
+//         const trip = await TripModel.findByIdAndDelete(id);
+//         if (!trip) {
+//             throw new Error('Trip not found.');
+//         }
+//         return trip;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+
 static async deleteTrip(id) {
     try {
-        const trip = await TripModel.findByIdAndDelete(id);
+        // العثور على الرحلة المطلوبة
+        const trip = await TripModel.findById(id);
         if (!trip) {
             throw new Error('Trip not found.');
         }
-        return trip;
+
+        // حذف الحجوزات المرتبطة بالرحلة
+        await BookTrip.deleteMany({
+            from: trip.from,
+            to: trip.to,
+            date: trip.date,
+            time: trip.time,
+        });
+
+        // حذف الرحلة نفسها
+        await TripModel.findByIdAndDelete(id);
+
+        return { trip, message: 'Trip and related bookings deleted successfully.' };
     } catch (error) {
         throw error;
     }
 }
+
 
 // إضافة دالة لجلب جميع الرحلات لجميع السائقين
 /*static async getAllTrips() {
@@ -84,12 +111,6 @@ static async getAllTrips(filter = {}) {
         throw error;
     }
 }
-
-
-
-
-    
-    
 }
 
 module.exports = TripServices;

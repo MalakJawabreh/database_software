@@ -33,21 +33,37 @@ exports.getDriverTrips = async (req, res) => {
     }
 };
 
-// حذف رحلة بناءً على الـ id
+// // حذف رحلة بناءً على الـ id
+// exports.deleteTrip = async (req, res) => {
+//     try {
+//         const { id } = req.params; // الـ id سيتم تمريره في URL
+//         if (!id) {
+//             return res.status(400).json({ status: false, error: "Trip ID is required." });
+//         }
+
+//         const deletedTrip = await TripServices.deleteTrip(id);
+//         res.status(200).json({ status: true, message: "Trip deleted successfully.", deletedTrip });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(400).json({ status: false, error: error.message });
+//     }
+// };
+
 exports.deleteTrip = async (req, res) => {
     try {
-        const { id } = req.params; // الـ id سيتم تمريره في URL
+        const { id } = req.params; // الـ id يتم تمريره في URL
         if (!id) {
             return res.status(400).json({ status: false, error: "Trip ID is required." });
         }
 
-        const deletedTrip = await TripServices.deleteTrip(id);
-        res.status(200).json({ status: true, message: "Trip deleted successfully.", deletedTrip });
+        const result = await TripServices.deleteTrip(id);
+        res.status(200).json({ status: true, message: result.message, deletedTrip: result.trip });
     } catch (error) {
         console.error(error);
         res.status(400).json({ status: false, error: error.message });
     }
 };
+
 
 
 // جلب جميع الرحلات لجميع السائقين
