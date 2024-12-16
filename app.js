@@ -9,7 +9,9 @@ const bookTripRoutes = require('./routers/bookingtripP.router');
 const app = express();
 
 // Middleware
-app.use(body_parser.json());
+// زيادة الحد الأقصى لحجم الطلب إلى 10MB
+app.use(body_parser.json({ limit: '10mb' }));
+app.use(body_parser.urlencoded({ limit: '10mb', extended: true }))
 app.use(cors());
 
 // ربط المسارات
