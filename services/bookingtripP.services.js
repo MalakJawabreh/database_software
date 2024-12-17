@@ -98,11 +98,35 @@ const cancelBooking = async (bookingId) => {
     await BookTrip.findByIdAndDelete(bookingId);
     return { status: true, message: "Booking canceled successfully." };
 };
+const updateBooking = async (bookingId, updatedData) => {
+    try {
+      const booking = await BookTrip.findById(bookingId);
+      if (!booking) {
+        throw new Error("Booking not found.");
+      }
+  
+      // تحديث الحقول
+      booking.seat = updatedData.seat !== undefined ? updatedData.seat : booking.seat;
+      booking.Note = updatedData.Note !== undefined ? updatedData.Note : booking.Note;
+  
+      // حفظ التحديثات في قاعدة البيانات
+      await booking.save();
+  
+      console.log('Updated booking:', booking);  // تحقق من الحجز المحدث
+  
+      return booking;
+    } catch (error) {
+      console.error('Error updating booking:', error);
+      throw new Error(error.message);
+    }
+  };
+  
 
 module.exports = {
     createBooking,
     getAllBookings,
     getPassengersByTrip,
     getBookingsByEmail2,
-    cancelBooking
+    cancelBooking,
+    updateBooking
 };
