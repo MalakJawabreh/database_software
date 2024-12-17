@@ -3,18 +3,7 @@ const TripModel = require('../model/tripD.model');
 
 // إضافة حجز جديد
 const createBooking = async (data) => {
-    // التحقق إذا كان الراكب قد حجز بالفعل على نفس الرحلة
-    const existingBooking = await BookTrip.findOne({
-        nameP: data.nameP,
-        from: data.from,
-        to: data.to,
-        date: data.date,
-        time: data.time
-    });
-
-    if (existingBooking) {
-        throw new Error("You have already booked this trip.");
-    }
+    
 
     // التحقق إذا كان الراكب لديه حجز آخر في نفس الوقت
     const conflictingBooking = await BookTrip.findOne({
