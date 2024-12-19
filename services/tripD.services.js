@@ -60,7 +60,6 @@ class TripServices {
 //         throw error;
 //     }
 // }
-
 static async deleteTrip(id) {
     try {
         // العثور على الرحلة المطلوبة
@@ -76,7 +75,6 @@ static async deleteTrip(id) {
             date: trip.date,
             time: trip.time,
         });
-
         // حذف الرحلة نفسها
         await TripModel.findByIdAndDelete(id);
 
