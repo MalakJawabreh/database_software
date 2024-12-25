@@ -1,39 +1,38 @@
 const UserModel = require('../model/user.model');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 class UserServices {
-    static async registerUser(profilePicture,fullName, email, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType) {
+    static async registerUser(profilePicture, fullName, email, password, phoneNumber, gender, role, licensePicture, InsurancePicture, carNumber, carType) {
         try {
             // إنشاء بيانات المستخدم
-            const userData = {profilePicture, fullName, email, password, phoneNumber, gender, role };
+            const userData = { profilePicture, fullName, email, password, phoneNumber, gender, role };
 
             // إضافة الحقول الخاصة بالسائق إذا كان الدور Driver
             if (role == 'Driver') {
                 userData.carNumber = carNumber;
                 userData.carType = carType;
-                userData.licensePicture=licensePicture;
-                userData.InsurancePicture=InsurancePicture;
+                userData.licensePicture = licensePicture;
+                userData.InsurancePicture = InsurancePicture;
             }
+
             const createUser = new UserModel(userData);
             return await createUser.save();
         } catch (err) {
-            console.error(err);
+            console.error("Error in registering user:", err);
             throw err;
         }
     }
 
-    static async checkuser(email)
-    {
+    static async checkuser(email) {
         try {
-            return await UserModel.findOne({email});
-            
+            return await UserModel.findOne({ email });
         } catch (error) {
             throw error;
         }
     }
 
     static async updateUserProfilePicture(email, profilePicture) {
-
         if (!email || !profilePicture) {
             throw new Error("Email and profilePicture are required");
         }
@@ -46,6 +45,7 @@ class UserServices {
             );
             return updatedUser;
         } catch (error) {
+            console.error("Error in updating profile picture:", error);
             throw error;
         }
     }
@@ -54,24 +54,52 @@ class UserServices {
         if (!email) {
             throw new Error("Email is required");
         }
-    
+
         try {
-            // البحث عن المستخدم باستخدام البريد الإلكتروني
-            const user = await UserModel.findOne({ email }, 'profilePicture'); // جلب الحقل "profilePicture" فقط
+            const user = await UserModel.findOne({ email }, 'profilePicture');
             if (!user) {
                 throw new Error("User not found");
             }
             return user.profilePicture;
         } catch (error) {
+            console.error("Error in retrieving profile picture:", error);
+            throw error;
+        }
+    }
+
+    static async generateToken(tokenData, secretKey, jwt_expire) {
+        try {
+            return jwt.sign(tokenData, secretKey, { expiresIn: jwt_expire });
+        } catch (error) {
+            console.error("Error in generating token:", error);
+            throw error;
+        }
+    }
+
+    static async updatePassword(user, newPassword) {
+        try {
+            // التحقق من أن كلمة المرور الجديدة تتوافق مع القواعد
+            const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            if (!passwordRegex.test(newPassword)) {
+                throw new Error('Password must contain at least one letter, one number, and be at least 8 characters long');
+            }
+    
+            // تشفير كلمة المرور الجديدة
+            const salt = await bcrypt.genSalt(12);
+            const hashPass = await bcrypt.hash(newPassword, salt);
+    
+            // تحديث كلمة المرور باستخدام updateOne مع bypass validation
+            await UserModel.updateOne({ _id: user._id }, { password: hashPass });
+    
+        } catch (error) {
+            console.error("Error in updating password:", error);
             throw error;
         }
     }
     
 
-    static async generateToken(tokenData,secretKey,jwt_expire)
-    {
-        return jwt.sign(tokenData,secretKey,{expiresIn:jwt_expire});
-    }
-
+    
+    
 }
+
 module.exports = UserServices;

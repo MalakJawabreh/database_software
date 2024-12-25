@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const { Schema } = mongoose;
- 
+
 const userSchema = new Schema({
     profilePicture: {
-        type: String, // Use a string URL to store the image URL.
-        required: false // You may want to make this optional if not all users will have a profile picture.
+        type: String,
+        required: false
     },
     fullName: {
         type: String,
@@ -22,20 +22,17 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8, // الحد الأدنى لطول كلمة المرور
+        minlength: 8,
         match: [
             /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
             'Password must contain at least one letter, one number, and be at least 8 characters long',
         ]
     },
-    
     phoneNumber: {
         type: String,
         required: true,
-        // unique: true,
-        match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'], // الصيغة الدولية والمحلية
+        match: [/^(\+?[1-9]\d{1,14}|0\d{9})$/, 'Invalid phone number'],
     },
-    
     gender: {
         type: String,
         enum: ['Male', 'Female'],
@@ -47,12 +44,12 @@ const userSchema = new Schema({
         required: true
     },
     licensePicture: {
-        type: String, // Use a string URL to store the image URL.
-        required: false // You may want to make this optional if not all users will have a profile picture.
+        type: String,
+        required: false
     },
-    InsurancePicture:{
-        type: String, // Use a string URL to store the image URL.
-        required: false // You may want to make this optional if not all users will have a profile picture.
+    InsurancePicture: {
+        type: String,
+        required: false
     },
     carNumber: {
         type: String,
@@ -61,7 +58,8 @@ const userSchema = new Schema({
     carType: {
         type: String,
         required: function () { return this.role === 'Driver'; },
-    }
+    },
+   
 });
 
 // تشفير كلمة المرور
@@ -69,12 +67,17 @@ userSchema.pre('save', async function (next) {
     try {
         const user = this;
 
-        // إذا كانت كلمة المرور قد تم تعديلها فقط
         if (!user.isModified('password')) {
             return next();
         }
 
-        const salt = await bcrypt.genSalt(12); // زيادة cost factor لتحسين الأمان
+        // التحقق من أن كلمة المرور تتوافق مع القواعد قبل التشفير
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        if (!passwordRegex.test(user.password)) {
+            throw new Error('Password must contain at least one letter, one number, and be at least 8 characters long');
+        }
+
+        const salt = await bcrypt.genSalt(12);
         const hashPass = await bcrypt.hash(user.password, salt);
         user.password = hashPass;
         next();
@@ -91,12 +94,6 @@ userSchema.methods.comparePassword = async function (userPassword) {
         throw error;
     }
 };
-
-// // التحقق من رقم الهاتف الفريد
-// userSchema.path('phoneNumber').validate(async function (value) {
-//     const count = await this.model('User').countDocuments({ phoneNumber: value });
-//     return count === 0;
-// }, 'Phone number already exists');
 
 const UserModel = db.model('User', userSchema);
 module.exports = UserModel;
