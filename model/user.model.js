@@ -59,6 +59,10 @@ const userSchema = new Schema({
         type: String,
         required: function () { return this.role === 'Driver'; },
     },
+    blockedUsers: [{
+        type: Schema.Types.ObjectId, // يشير إلى معرف المستخدم
+        ref: 'User', // المرجعية إلى مخطط المستخدم
+    }],
    
 });
 

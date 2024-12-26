@@ -122,5 +122,35 @@ exports.changePassword = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+exports.blockUser = async (req, res, next) => {
+    try {
+        const { userId, blockedUserId } = req.body;
+
+        if (!userId || !blockedUserId) {
+            return res.status(400).json({ status: false, error: 'User ID and Blocked User ID are required.' });
+        }
+
+        const user = await UserServices.blockUser(userId, blockedUserId);
+        res.status(200).json({ status: true, success: 'User blocked successfully', user });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+exports.unblockUser = async (req, res, next) => {
+    try {
+        const { userId, blockedUserId } = req.body;
+
+        if (!userId || !blockedUserId) {
+            return res.status(400).json({ status: false, error: 'User ID and Blocked User ID are required.' });
+        }
+
+        const user = await UserServices.unblockUser(userId, blockedUserId);
+        res.status(200).json({ status: true, success: 'User unblocked successfully', user });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
 
 

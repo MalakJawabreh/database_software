@@ -96,6 +96,48 @@ class UserServices {
             throw error;
         }
     }
+    static async blockUser(userId, blockedUserId) {
+        try {
+            const user = await UserModel.findById(userId);
+    
+            if (!user) {
+                throw new Error('User not found');
+            }
+    
+            // التحقق من أن المستخدم الآخر ليس محظورًا بالفعل
+            if (user.blockedUsers.includes(blockedUserId)) {
+                throw new Error('User is already blocked');
+            }
+    
+            // إضافة المستخدم إلى القائمة
+            user.blockedUsers.push(blockedUserId);
+            await user.save();
+    
+            return user;
+        } catch (error) {
+            console.error('Error in blocking user:', error);
+            throw error;
+        }
+    }
+static async unblockUser(userId, blockedUserId) {
+    try {
+        const user = await UserModel.findById(userId);
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // إزالة المستخدم من القائمة
+        user.blockedUsers = user.blockedUsers.filter(id => id.toString() !== blockedUserId.toString());
+        await user.save();
+
+        return user;
+    } catch (error) {
+        console.error('Error in unblocking user:', error);
+        throw error;
+    }
+}
+    
     
 
     
