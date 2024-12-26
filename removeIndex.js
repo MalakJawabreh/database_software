@@ -7,8 +7,8 @@ const removePhoneNumberIndex = async () => {
         console.log('Connected to MongoDB.');
 
         // إزالة الفهرس
-        await TripModel.collection.dropIndex('phoneNumberD_1');
-        console.log('Index "phoneNumberD_1" has been removed.');
+        await TripModel.collection.dropIndex('phoneNumber_1');
+        console.log('Index "phoneNumber_1" has been removed.');
 
         await mongoose.disconnect();
         console.log('Disconnected from MongoDB.');

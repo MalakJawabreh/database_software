@@ -2,7 +2,7 @@ const UserServices = require("../services/user.services");
 
 exports.register = async (req, res, next) => {
     try {
-        const {profilePicture, fullName, email, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType } = req.body;
+        const {profilePicture, fullName, email,location, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType } = req.body;
 
         if (!fullName || !email || !password || !phoneNumber || !gender || !role) {
             return res.status(400).json({ status: false, error: "All fields are required." });
@@ -12,7 +12,7 @@ exports.register = async (req, res, next) => {
             return res.status(400).json({ status: false, error: "Vehicle number and vehicle type are required for drivers." });
         }
 
-        const successRes = await UserServices.registerUser(profilePicture,fullName, email, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType);
+        const successRes = await UserServices.registerUser(profilePicture,fullName, email,location, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType);
 
         res.json({ status: true, success: "User Registered Successfully" });
     } 
@@ -33,6 +33,24 @@ exports.updateProfilePicture = async (req, res, next) => {
         const updatedUser = await UserServices.updateUserProfilePicture(email, profilePicture);
 
         res.status(200).json({ status: true, success: "تم تحديث صورة الملف الشخصي بنجاح", user: updatedUser });
+    } 
+    catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
+exports.updatelocation = async (req, res, next) => {
+    try {
+
+        console.log('Request Body:', req.body);
+
+        const email = req.body.email;
+        const location = req.body.location; // assuming profile picture URL is sent as form-data with key 'profilePicture'
+
+        const updatedUser = await UserServices.updatelocation(email, location);
+
+        res.status(200).json({ status: true, success: "location updated", user: updatedUser });
     } 
     catch (error) {
         console.error(error);
@@ -87,6 +105,27 @@ exports.login = async (req, res, next) => {
 
     } 
     catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
+exports.getUserDetails = async (req, res, next) => {
+    try {
+        const { email } = req.query; // الحصول على الإيميل من Query Parameters
+
+        if (!email) {
+            return res.status(400).json({ status: false, error: "Email is required" });
+        }
+
+        const userDetails = await UserServices.getUserByEmail(email);
+
+        res.status(200).json({
+            status: true,
+            success: "User details fetched successfully",
+            user: userDetails,
+        });
+    } catch (error) {
         console.error(error);
         res.status(400).json({ status: false, error: error.message });
     }

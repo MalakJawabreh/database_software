@@ -19,6 +19,10 @@ const userSchema = new Schema({
         unique: true,
         match: [/^\S+@\S+\.\S+$/, 'Invalid email address']
     },
+    location:{
+        type: String,
+        required: false 
+    },
     password: {
         type: String,
         required: true,
@@ -28,7 +32,6 @@ const userSchema = new Schema({
             'Password must contain at least one letter, one number, and be at least 8 characters long',
         ]
     },
-    
     phoneNumber: {
         type: String,
         required: true,

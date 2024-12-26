@@ -67,12 +67,31 @@ const cancelBooking = async (req, res) => {
         res.status(500).json({ status: false, error: error.message });
     }
 };
+const updateBooking = async (req, res) => {
+    try {
+      const bookingId = req.params.id;
+      const updatedData = req.body;
+  
+      console.log('Received data:', updatedData);  // تحقق من البيانات المستقبلة
+  
+      const updatedBooking = await bookTripService.updateBooking(bookingId, updatedData);
+  
+      res.status(200).json({ status: true, updatedBooking });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ status: false, error: error.message });
+    }
+  };
+  
+
+
 
 module.exports = {
     createBooking,
     getAllBookings,
     getBookingsByEmail,
     getPassengersByTrip,
-    cancelBooking
+    cancelBooking,
+    updateBooking
 };
 //new

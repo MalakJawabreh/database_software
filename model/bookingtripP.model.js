@@ -61,6 +61,10 @@ const booktripSchema = new Schema({
         type: String,
         required: true,
     },
+    carBrand: {
+        type: String,
+        required: false, // إذا كان غير مطلوب
+    },
     Note: {
         type: String,
         maxlength: [500, 'Note cannot exceed 500 characters'], // قيود على طول النص

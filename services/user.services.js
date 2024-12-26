@@ -2,10 +2,10 @@ const UserModel = require('../model/user.model');
 const jwt = require('jsonwebtoken');
 
 class UserServices {
-    static async registerUser(profilePicture,fullName, email, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType) {
+    static async registerUser(profilePicture,fullName, email,location, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType) {
         try {
             // إنشاء بيانات المستخدم
-            const userData = {profilePicture, fullName, email, password, phoneNumber, gender, role };
+            const userData = {profilePicture, fullName, email,location, password, phoneNumber, gender, role };
 
             // إضافة الحقول الخاصة بالسائق إذا كان الدور Driver
             if (role == 'Driver') {
@@ -50,6 +50,24 @@ class UserServices {
         }
     }
 
+    static async updatelocation(email, location) {
+
+        if (!email || !location) {
+            throw new Error("Email and profilePicture are required");
+        }
+
+        try {
+            const updatedUser = await UserModel.findOneAndUpdate(
+                { email }, // البحث باستخدام البريد الإلكتروني
+                { location }, // التحديث
+                { new: true } // إعادة الوثيقة المُحدَّثة
+            );
+            return updatedUser;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     static async getProfilePictureByEmail(email) {
         if (!email) {
             throw new Error("Email is required");
@@ -66,6 +84,23 @@ class UserServices {
             throw error;
         }
     }
+
+    static async getUserByEmail(email) {
+        if (!email) {
+            throw new Error("Email is required");
+        }
+    
+        try {
+            const user = await UserModel.findOne({ email }); // جلب جميع معلومات المستخدم
+            if (!user) {
+                throw new Error("User not found");
+            }
+            return user;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
     
 
     static async generateToken(tokenData,secretKey,jwt_expire)
