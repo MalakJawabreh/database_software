@@ -5,6 +5,7 @@ const userRouter = require('./routers/user.routers');
 const tripDriverRouter = require('./routers/tripD.router');
 const TripServices = require('./services/tripD.services');
 const bookTripRoutes = require('./routers/bookingtripP.router');
+const complaint = require('./routers/complaint.router');
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use(cors());
 app.use('/', userRouter); // المستخدمين
 app.use('/', tripDriverRouter); // الرحلات
 app.use('/', bookTripRoutes); // الحجوزات
+app.use('/', complaint); // الشكاوي
 
 module.exports = app;
