@@ -79,23 +79,29 @@ exports.getProfilePicture = async (req, res, next) => {
     }
 };
 
-
 exports.login = async (req, res, next) => {
     try {
         const {email, password} = req.body;
 
         const user = await UserServices.checkuser(email);
 
-        if(!user)
-        {
-            throw new Error('User not exist');
+        
+        if (!user) {
+            // إرسال رسالة عند عدم وجود المستخدم
+            return res.status(400).json({ 
+                status: false, 
+                message: 'Email does not exist' 
+            });
         }
 
         const isMatch = await user.comparePassword(password);
 
-        if(isMatch === false)
-        {
-            throw new Error('Password Invalid');
+        if (!isMatch) {
+            // إرسال رسالة عند كون كلمة المرور غير صحيحة
+            return res.status(400).json({ 
+                status: false, 
+                message: 'Invalid password' 
+            });
         }
 
         let tokenData = {_id:user._id,gender:user.gender,email:user.email,role:user.role,fullName:user.fullName,phoneNumber:user.phoneNumber,licensePicture:user.licensePicture,profilePicture:user.profilePicture,InsurancePicture:user.InsurancePicture,carType:user.carType};
@@ -111,6 +117,7 @@ exports.login = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+
 exports.changePassword = async (req, res, next) => {
     try {
         const { email, oldPassword, newPassword } = req.body;
