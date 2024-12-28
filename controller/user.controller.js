@@ -1,3 +1,4 @@
+const nodemailer = require('nodemailer');
 const UserServices = require("../services/user.services");
 
 exports.register = async (req, res, next) => {
@@ -13,6 +14,31 @@ exports.register = async (req, res, next) => {
         }
 
         const successRes = await UserServices.registerUser(profilePicture,fullName, email,location, password, phoneNumber, gender, role,licensePicture,InsurancePicture, carNumber, carType);
+         // إعداد بريد إلكتروني للإرسال
+         const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'maakwassalni@gmail.com',  // بريدك الإلكتروني
+                pass: 'bysg qfzv vobk fscq'    // كلمة المرور الخاصة ببريدك
+            }
+        });
+
+        // إعداد محتوى الرسالة
+        const mailOptions = {
+            from: 'maakwassalni@gmail.com',  // نفس البريد الإلكتروني
+            to: email,                     // البريد الإلكتروني للمستخدم
+            subject: 'Account Registration Successful',
+            text: `Hello ${fullName},\n\nYour account has been successfully registered.\n\nThank you for using our service!`
+        };
+
+        // إرسال البريد الإلكتروني
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
 
         res.json({ status: true, success: "User Registered Successfully" });
     } 
