@@ -36,7 +36,7 @@ const tripSchema = new Schema({
         required: true,
         min: [0, 'Price must be a positive value'], // السعر يجب ألا يكون سالبًا
     },
-    maxPassengers: {
+    maxPassengers: { 
         type: Number,
         required: true,
         min: [1, 'Max passengers must be at least 1'], // يجب أن يكون هناك راكب واحد على الأقل
@@ -44,10 +44,6 @@ const tripSchema = new Schema({
     date: {
         type: Date,
         required: true,
-        validate: {
-            validator: (value) => value >= new Date(),
-            message: 'Date must be in the future.',
-        },
     },
     time: {
         type: String,

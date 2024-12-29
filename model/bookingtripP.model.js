@@ -52,10 +52,7 @@ const booktripSchema = new Schema({
     date: {
         type: Date,
         required: true,
-        validate: {
-            validator: (value) => value >= new Date(),
-            message: 'Date must be in the future.', // التحقق من أن التاريخ في المستقبل
-        },
+
     },
     time: {
         type: String,
@@ -74,8 +71,14 @@ const booktripSchema = new Schema({
         required: true,
         min: [1, 'Seat number must be at least 1'], // عدد المقاعد يجب أن يكون 1 على الأقل
     },
- 
-
+    driverRate:{
+        type: Number,
+        required: false,
+    },
+    NoteRate:{
+        type: String,
+        required: false, // إذا كان غير مطلوب
+    }
 });
 
 const bookTripModel = db.model('BookTrip', booktripSchema);

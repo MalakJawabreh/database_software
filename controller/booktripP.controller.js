@@ -82,6 +82,22 @@ const updateBooking = async (req, res) => {
       res.status(500).json({ status: false, error: error.message });
     }
   };
+
+  const updateBookingRate = async (req, res) => {
+    try {
+      const bookingId = req.params.id;
+      const updatedData = req.body;
+  
+      console.log('Received data:', updatedData);  // تحقق من البيانات المستقبلة
+  
+      const updatedBooking = await bookTripService.updateBookingRate(bookingId, updatedData);
+  
+      res.status(200).json({ status: true, updatedBooking });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ status: false, error: error.message });
+    }
+  };
   
 
 
@@ -92,6 +108,7 @@ module.exports = {
     getBookingsByEmail,
     getPassengersByTrip,
     cancelBooking,
-    updateBooking
+    updateBooking,
+    updateBookingRate
 };
 //new

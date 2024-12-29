@@ -121,6 +121,28 @@ const updateBooking = async (bookingId, updatedData) => {
     }
   };
   
+  const updateBookingRate = async (bookingId, updatedData) => {
+    try {
+      const booking = await BookTrip.findById(bookingId);
+      if (!booking) {
+        throw new Error("Booking not found.");
+      }
+  
+      // تحديث الحقول
+      booking.driverRate = updatedData.driverRate !== undefined ? updatedData.driverRate : booking.driverRate;
+      booking.NoteRate = updatedData.NoteRate !== undefined ? updatedData.NoteRate : booking.NoteRate;
+  
+      // حفظ التحديثات في قاعدة البيانات
+      await booking.save();
+  
+      console.log('Updated booking:', booking);  // تحقق من الحجز المحدث
+  
+      return booking;
+    } catch (error) {
+      console.error('Error updating booking:', error);
+      throw new Error(error.message);
+    }
+  };
 
 module.exports = {
     createBooking,
@@ -128,5 +150,6 @@ module.exports = {
     getPassengersByTrip,
     getBookingsByEmail2,
     cancelBooking,
-    updateBooking
+    updateBooking,
+    updateBookingRate
 };
