@@ -11,7 +11,7 @@ router.post('/unblock-user', UserController.unblockUser);
 
 router.get("/getuser", UserController.getUserDetails);
 router.post('/update_location', UserController.updatelocation);
-
+router.get('/all_driver', UserController.getAllDrivers);
 
 module.exports = router;
 

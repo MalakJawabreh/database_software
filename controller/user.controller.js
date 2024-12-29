@@ -227,3 +227,19 @@ exports.getUserDetails = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+
+exports.getAllDrivers = async (req, res, next) => {
+    try {
+        const drivers = await UserServices.getAllDrivers();
+
+        res.status(200).json({
+            status: true,
+            success: "Drivers fetched successfully",
+            drivers: drivers,
+        });
+    } catch (error) {
+        console.error('Error fetching drivers:', error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+

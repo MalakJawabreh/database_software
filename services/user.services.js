@@ -174,6 +174,16 @@ static async unblockUser(userId, blockedUserId) {
         throw error;
     }
 }
+
+static async getAllDrivers() {
+    try {
+        return await UserModel.find({ role: 'Driver' });
+    } catch (error) {
+        console.error('Error fetching drivers:', error);
+        throw error;
+    }
+}
+
 }
 
 module.exports = UserServices;
