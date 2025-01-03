@@ -183,6 +183,24 @@ static async getAllDrivers() {
         throw error;
     }
 }
+static async getAllUsers() {
+    try {
+        return await UserModel.find(); // يجلب جميع المستخدمين
+    } catch (error) {
+        console.error('Error fetching all users:', error);
+        throw error;
+    }
+}
+static async getAllPassengers() {
+    try {
+        return await UserModel.find({ role: 'Passenger' });
+    } catch (error) {
+        console.error('Error fetching passengers:', error);
+        throw error;
+    }
+}
+
+
 
 }
 

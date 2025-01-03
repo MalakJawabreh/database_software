@@ -242,4 +242,33 @@ exports.getAllDrivers = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+exports.getAllUsers = async (req, res, next) => {
+    try {
+        const users = await UserServices.getAllUsers();
+
+        res.status(200).json({
+            status: true,
+            success: "All users fetched successfully",
+            users: users,
+        });
+    } catch (error) {
+        console.error('Error fetching all users:', error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+exports.getAllPassengers = async (req, res, next) => {
+    try {
+        const passengers = await UserServices.getAllPassengers();
+
+        res.status(200).json({
+            status: true,
+            success: "Passengers fetched successfully",
+            passengers: passengers,
+        });
+    } catch (error) {
+        console.error('Error fetching passengers:', error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
 

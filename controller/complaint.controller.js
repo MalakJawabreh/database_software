@@ -19,6 +19,18 @@ class ComplaintController {
           return res.status(500).json({ error: 'Error submitting complaint: ' + error.message });
         }
       }
+
+      static async getAllComplaints(req, res) {
+        try {
+          const complaints = await ComplaintService.getAllComplaints();
+          return res.status(200).json({
+            message: 'Complaints fetched successfully',
+            data: complaints,
+          });
+        } catch (error) {
+          return res.status(500).json({ error: 'Error fetching complaints: ' + error.message });
+        }
+      }
       
 }
 
