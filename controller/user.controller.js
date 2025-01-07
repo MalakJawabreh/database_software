@@ -94,6 +94,10 @@ exports.getProfilePicture = async (req, res, next) => {
 
         const profilePicture = await UserServices.getProfilePictureByEmail(email);
 
+        if (!profilePicture) {
+            return res.status(404).json({ status: false, error: "Profile picture not found" });
+        }
+
         res.status(200).json({
             status: true,
             success: "Profile picture fetched successfully",
@@ -104,6 +108,7 @@ exports.getProfilePicture = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+
 
 exports.login = async (req, res, next) => {
     try {

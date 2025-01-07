@@ -3,13 +3,13 @@ const TripServices = require('../services/tripD.services');
 // إنشاء رحلة جديدة
 exports.createTrip = async (req, res) => {
     try {
-        const { name ,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand} = req.body;
+        const { name ,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand,visibilty_trip} = req.body;
 
         if (!name|| !driverEmail ||!phoneNumber|| !from || !to || !price || !maxPassengers || !date || !time) {
             return res.status(400).json({ status: false, error: "All fields are required." });
         }
 
-        const trip = await TripServices.createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand);
+        const trip = await TripServices.createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand,visibilty_trip);
         res.status(200).json({ status: true, trip });
     } catch (error) { 
         console.error(error);
@@ -113,3 +113,22 @@ exports.getFilteredTrips = async (req, res) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+
+// جلب الرحلات بناءً على جندر المستخدم
+exports.getTripsByGender = async (req, res) => {
+    try {
+        const userId = req.params.userId; // جلب الـ userId من الـ URL
+        if (!userId) {
+            return res.status(400).json({ status: false, error: "User ID is required." });
+        }
+
+        // جلب الرحلات بناءً على الجندر
+        const trips = await TripServices.getTripsByGender(userId);
+        res.status(200).json({ status: true, trips });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
+

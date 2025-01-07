@@ -63,8 +63,14 @@ const tripSchema = new Schema({
     status_trip: {
         type: String,
         enum: ['upcoming', 'completed', 'cancelled'],
-        required: true,
+        required: false,
         default: 'upcoming',
+    },
+    visibilty_trip: {
+        type: String,
+        enum: ['Public', 'Female', 'Male'], // القيم الجديدة
+        required: false,
+        default: 'Public', // القيمة الافتراضية الجديدة
     },
     
 });

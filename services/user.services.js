@@ -72,17 +72,18 @@ class UserServices {
         if (!email) {
             throw new Error("Email is required");
         }
-
+    
         try {
             const user = await UserModel.findOne({ email }, 'profilePicture');
-            if (!user) {
-                throw new Error("User not found");
+            if (!user || !user.profilePicture) {
+                return null; // إذا لم تكن الصورة موجودة
             }
             return user.profilePicture;
         } catch (error) {
             throw error;
         }
     }
+    
 
     static async getUserByEmail(email) {
         if (!email) {

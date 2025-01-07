@@ -1,10 +1,12 @@
 const TripModel = require('../model/tripD.model');
 const BookTrip= require('../model/bookingtripP.model');
+const UserModel = require('../model/user.model'); // استيراد نموذج المستخدم
+
 const moment = require('moment'); // للتعامل مع التواريخ والأوقات
 
 class TripServices {
     // إنشاء رحلة جديدة
-    static async createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand) {
+    static async createTrip(name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand,visibilty_trip) {
         try {
             const currentDateTime = moment();
             const tripDateTime = moment(`${date} ${time}`, 'YYYY-MM-DD hh:mmA');
@@ -24,14 +26,15 @@ class TripServices {
                 currentPassengers,
                 date,
                 time,
-                carBrand
+                carBrand,
+                visibilty_trip
             });
 
             if (isDuplicate) {
                 throw new Error('This trip already exists.');
             }
 
-            const tripData = { name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand, status_trip };
+            const tripData = { name,driverEmail,phoneNumber, from, to, price, maxPassengers,currentPassengers, date, time,carBrand, status_trip,visibilty_trip };
             const newTrip = new TripModel(tripData);
             return await newTrip.save();
         } catch (error) {
@@ -109,6 +112,37 @@ static async getAllTrips(filter = {}) {
         throw error;
     }
 }
+
+    // جلب الرحلات بناءً على جندر المستخدم
+    static async getTripsByGender(userId) {
+        try {
+            // جلب بيانات المستخدم بناءً على الـ userId
+            const user = await UserModel.findById(userId);
+
+            if (!user) {
+                throw new Error('User not found.');
+            }
+
+            let genderFilter = [];
+
+            // تحديد الفلاتر بناءً على الجندر
+            if (user.gender === 'Female') {
+                genderFilter = ['Public', 'Female'];
+            } else if (user.gender === 'Male') {
+                genderFilter = ['Public', 'Male'];
+            }
+
+            // البحث عن الرحلات التي تتوافق مع الفلاتر المحددة
+            const trips = await TripModel.find({
+                visibilty_trip: { $in: genderFilter }
+            });
+
+            return trips;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }
 
 module.exports = TripServices;
