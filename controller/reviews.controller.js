@@ -25,20 +25,19 @@ class ReviewController {
     }
   }
   static async getReviewByReviewerAndReviewed(req, res) {
-    const { reviewerEmail, reviewedEmail } = req.params;
+    const { reviewedEmail } = req.params;
 
     // إزالة المسافات وأي أحرف غير مرئية
-    const cleanReviewerEmail = reviewerEmail.trim();
     const cleanReviewedEmail = reviewedEmail.trim();
 
-    console.log('Cleaned Params:', { cleanReviewerEmail, cleanReviewedEmail });
+    console.log('Cleaned Params:', { cleanReviewedEmail });
 
     try {
-        const review = await ReviewService.getReviewByReviewerAndReviewed(cleanReviewerEmail, cleanReviewedEmail);
+        const review = await ReviewService.getReviewByReviewerAndReviewed(cleanReviewedEmail);
         if (!review) {
-            console.log(`No review found for ${cleanReviewerEmail} -> ${cleanReviewedEmail}`);
+            console.log(`No review found for ${cleanReviewedEmail}`);
             return res.status(404).json({
-                message: `No review found from ${cleanReviewerEmail} to ${cleanReviewedEmail}`,
+                message: `No review found to ${cleanReviewedEmail}`,
             });
         }
 

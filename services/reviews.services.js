@@ -21,10 +21,9 @@ class ReviewService {
     return averageRating.toFixed(2); // تقليل الرقم العشري إلى خانتين
   }
 
-  static async getReviewByReviewerAndReviewed(reviewerEmail, reviewedEmail) {
+  static async getReviewByReviewerAndReviewed(reviewedEmail) {
     // جلب التقييم بناءً على البريدين
-    const review = await Review.findOne({
-      reviewerEmail,
+    const review = await Review.find({
       reviewedEmail,
     });
 
