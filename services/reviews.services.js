@@ -1,7 +1,7 @@
 const Review = require('../model/reviews.model');
 
 class ReviewService {
-  static async createReview(data) {
+  static async createReview(data) { 
     const review = new Review(data);
     return await review.save();
   }

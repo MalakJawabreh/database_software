@@ -81,38 +81,36 @@ exports.getAllTrips = async (req, res) => {
 
 exports.getFilteredTrips = async (req, res) => {
     try {
-        const { from, to, filterOption, filterValue, maxPrice } = req.query;
-       //const { from, to, filterOption, filterValue, maxPrice } = req.body;
-        // التحقق من إدخال from و to
-        if (!from || !to) {
-            return res.status(400).json({ status: false, error: "Both 'from' and 'to' fields are required." });
-        }
-
-        // إعداد الفلتر الأساسي
-        const filter = { from, to };
-
-        // تطبيق نوع الفلتر
-        if (filterOption === 'Price' && maxPrice) {
-            filter.price = { $lte: Number(maxPrice) }; // السعر أقل من أو يساوي
-        } else if (filterOption === 'Car Type' && filterValue) {
-            filter.carBrand = filterValue; // نوع السيارة
-        } else if (filterOption === 'Time' && filterValue) {
-            filter.time = filterValue; // وقت الرحلة
-        } else if (filterOption === 'Date' && filterValue) {
-            filter.date = filterValue; // تاريخ الرحلة
-        } else if (filterOption === 'Driver Rating' && filterValue) {
-            filter.driverRating = { $gte: Number(filterValue) }; // تقييم السائق أكبر من أو يساوي
-        }
-
-        // جلب النتائج بناءً على الفلتر
-        const trips = await TripServices.getAllTrips(filter);
-
-        res.status(200).json({ status: true, trips });
+      const { from, to, maxPrice, carBrand, time, date, driverRating, name } = req.query;
+  
+      // التحقق من إدخال from و to
+      if (!from || !to) {
+        return res.status(400).json({ status: false, error: "Both 'from' and 'to' fields are required." });
+      }
+  
+      // إعداد الفلتر الأساسي
+      const filter = { from, to };
+  
+      // تطبيق الفلاتر المحددة
+      if (maxPrice) filter.price = { $lte: Number(maxPrice) }; // السعر أقل من أو يساوي
+      if (carBrand) filter.carBrand = carBrand; // نوع السيارة
+      if (time) filter.time = time; // وقت الرحلة
+      if (date) filter.date = date; // تاريخ الرحلة
+      if (driverRating) filter.driverRating = { $gte: Number(driverRating) }; // تقييم السائق أكبر من أو يساوي
+      if (name) filter.name = name; // اسم السائق
+  
+      console.log("Filter applied:", filter);
+  
+      // جلب النتائج بناءً على الفلتر
+      const trips = await TripServices.getAllTrips(filter);
+  
+      res.status(200).json({ status: true, trips });
     } catch (error) {
-        console.error(error);
-        res.status(400).json({ status: false, error: error.message });
+      console.error(error);
+      res.status(400).json({ status: false, error: error.message });
     }
-};
+  };
+   
 
 // جلب الرحلات بناءً على جندر المستخدم
 exports.getTripsByGender = async (req, res) => {
