@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const bcrypt = require('bcryptjs');
+
 const body_parser = require('body-parser');
 const userRouter = require('./routers/user.routers');
 const tripDriverRouter = require('./routers/tripD.router');
@@ -7,7 +9,7 @@ const TripServices = require('./services/tripD.services');
 const bookTripRoutes = require('./routers/bookingtripP.router');
 const complaint = require('./routers/complaint.router');
 const review = require('./routers/reviews.router');
-
+const adminRoutes = require('./routers/admin.router');
 
 const app = express();
 
@@ -24,5 +26,6 @@ app.use('/', tripDriverRouter); // الرحلات
 app.use('/', bookTripRoutes); // الحجوزات
 app.use('/', complaint); // الشكاوي
 app.use('/', review); // التقييم
-
+//app.use('/', adminRoutes);
+app.use('/admin', adminRoutes); // قم بتحديد المسار `/admin` للوصول إلى التسجيل وتسجيل الدخول
 module.exports = app;
