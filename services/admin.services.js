@@ -2,7 +2,6 @@ const Admin = require('../model/admin.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
 class AdminService {
     // التحقق من وجود البريد الإلكتروني
     async findAdminByEmail(email) {
@@ -39,11 +38,34 @@ class AdminService {
         return { token, admin };
     }
 
-    // جلب جميع المستخدمين
-    async getAllUsers() {
-        // افتراض أن لديك نموذج User لعرض جميع المستخدمين
-        const users = await User.find();
-        return users;
+    // جلب جميع الإدمن
+    async getAllAdmins() {
+        return await Admin.find({}, { password: 0 }); // لا يتم عرض كلمة المرور
+    }
+
+    // تعديل بيانات الإدمن
+    async updateAdmin(adminId, updateData) {
+        // إذا كانت البيانات تحتوي على كلمة مرور، يتم تشفيرها
+        if (updateData.password) {
+            updateData.password = await bcrypt.hash(updateData.password, 10);
+        }
+
+        const updatedAdmin = await Admin.findByIdAndUpdate(adminId, updateData, { new: true });
+        if (!updatedAdmin) throw new Error('Admin not found');
+        return updatedAdmin;
+    }
+
+    // حذف إدمن
+    async deleteAdmin(adminId) {
+        const deletedAdmin = await Admin.findByIdAndDelete(adminId);
+        if (!deletedAdmin) throw new Error('Admin not found');
+        return deletedAdmin;
+    }
+
+    // التحقق من صلاحيات الإدمن
+    async isAdmin(adminId) {
+        const admin = await Admin.findById(adminId);
+        return admin?.role === 'admin';
     }
 }
 
