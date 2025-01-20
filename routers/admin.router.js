@@ -8,7 +8,7 @@ const userController = require('../controller/user.controller');
 router.post('/register', adminController.register);
 
 // تسجيل الدخول
-router.post('/login', adminController.login);
+router.post('/loginadmin', adminController.login);
 
 // جلب جميع الإدمنين
 router.get('/admins', authMiddleware, adminController.getAllAdmins);

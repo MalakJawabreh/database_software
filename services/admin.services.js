@@ -24,17 +24,17 @@ class AdminService {
 
     // تسجيل الدخول
     async loginAdmin(email, password) {
-        console.log(`Searching for admin with email: ${email}`);
         const admin = await Admin.findOne({ email });
         if (!admin) throw new Error('Admin not found');
-    
-        const isMatch = await bcrypt.compare(password, admin.password);
+        
+        const isMatch = await admin.comparePassword(password);  // استخدام comparePassword هنا
         if (!isMatch) throw new Error('Invalid credentials');
-
-        // توليد الـ JWT وتقديمه عند النجاح
-        const token = jwt.sign({ id: admin._id, role: admin.role }, 'secretKey', { expiresIn: '1h' });
-        return { message: 'Login successful', token };
+      
+        const secretKey = process.env.JWT_SECRET || 'default_secret_key_for_dev';
+        const token = jwt.sign({ id: admin._id, role: admin.role }, secretKey, { expiresIn: '1h' });
+                        return { message: 'Login successful', token };
     }
+    
 
     // جلب جميع الإدمنين
     async getAllAdmins() {
