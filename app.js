@@ -27,5 +27,5 @@ app.use('/', bookTripRoutes); // الحجوزات
 app.use('/', complaint); // الشكاوي
 app.use('/', review); // التقييم
 //app.use('/', adminRoutes);
-app.use('/admin', adminRoutes); // قم بتحديد المسار `/admin` للوصول إلى التسجيل وتسجيل الدخول
+app.use('/', adminRoutes); // قم بتحديد المسار `/admin` للوصول إلى التسجيل وتسجيل الدخول
 module.exports = app;

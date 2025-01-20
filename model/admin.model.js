@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-
-const db = require('../config/db');
 const bcrypt = require('bcrypt');
-
+const db = require('../config/db');
 
 const adminSchema = new mongoose.Schema({
     name: {
@@ -22,8 +20,8 @@ const adminSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        default: 'admin', // التأكد أن الدور هو "admin"
-        enum: ['admin'], // قبول أدوار محددة فقط
+        default: 'admin',
+        enum: ['admin'],
     },
     createdAt: {
         type: Date,

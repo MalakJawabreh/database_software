@@ -12,7 +12,6 @@ class AdminService {
     async registerAdmin(adminData) {
         const { name, email, password } = adminData;
 
-        // التحقق من أن البريد الإلكتروني غير موجود مسبقًا
         const existingAdmin = await this.findAdminByEmail(email);
         if (existingAdmin) {
             throw new Error('Admin already registered with this email.');
@@ -25,27 +24,25 @@ class AdminService {
 
     // تسجيل الدخول
     async loginAdmin(email, password) {
+        console.log(`Searching for admin with email: ${email}`);
         const admin = await Admin.findOne({ email });
         if (!admin) throw new Error('Admin not found');
-
+    
         const isMatch = await bcrypt.compare(password, admin.password);
         if (!isMatch) throw new Error('Invalid credentials');
 
-        const token = jwt.sign({ id: admin._id, role: admin.role }, process.env.JWT_SECRET, {
-            expiresIn: '1d',
-        });
-
-        return { token, admin };
+        // توليد الـ JWT وتقديمه عند النجاح
+        const token = jwt.sign({ id: admin._id, role: admin.role }, 'secretKey', { expiresIn: '1h' });
+        return { message: 'Login successful', token };
     }
 
-    // جلب جميع الإدمن
+    // جلب جميع الإدمنين
     async getAllAdmins() {
-        return await Admin.find({}, { password: 0 }); // لا يتم عرض كلمة المرور
+        return await Admin.find({}, { password: 0 });
     }
 
     // تعديل بيانات الإدمن
     async updateAdmin(adminId, updateData) {
-        // إذا كانت البيانات تحتوي على كلمة مرور، يتم تشفيرها
         if (updateData.password) {
             updateData.password = await bcrypt.hash(updateData.password, 10);
         }

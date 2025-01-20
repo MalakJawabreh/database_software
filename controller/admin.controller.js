@@ -24,13 +24,15 @@ class AdminController {
     async login(req, res) {
         try {
             const { email, password } = req.body;
+            console.log(`Login attempt for email: ${email}`);
             const result = await adminService.loginAdmin(email, password);
-            res.status(200).json(result);
+            res.status(200).json(result);  // يجب أن ترجع الـ token في النتيجة
         } catch (error) {
-            res.status(401).json({ message: error.message });
+            console.error(error.message);
+            res.status(401).json({ status: false, message: error.message });
         }
     }
-
+    
     // جلب جميع الإدمنين
     async getAllAdmins(req, res) {
         try {
@@ -44,7 +46,7 @@ class AdminController {
     // تعديل بيانات إدمن
     async updateAdmin(req, res) {
         try {
-            const { id } = req.params; // معرف الإدمن
+            const { id } = req.params;
             const updateData = req.body;
 
             const updatedAdmin = await adminService.updateAdmin(id, updateData);
@@ -57,7 +59,7 @@ class AdminController {
     // حذف إدمن
     async deleteAdmin(req, res) {
         try {
-            const { id } = req.params; // معرف الإدمن
+            const { id } = req.params;
 
             const deletedAdmin = await adminService.deleteAdmin(id);
             res.status(200).json({ message: 'Admin deleted successfully', deletedAdmin });

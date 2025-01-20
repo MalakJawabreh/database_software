@@ -200,6 +200,34 @@ static async getAllPassengers() {
         throw error;
     }
 }
+static async addUser(userData) {
+    try {
+        const newUser = new UserModel(userData);
+        return await newUser.save();
+    } catch (error) {
+        console.error('Error adding user:', error);
+        throw error;
+    }
+}
+
+static async updateUserById(userId, updateData) {
+    try {
+        return await UserModel.findByIdAndUpdate(userId, updateData, { new: true });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
+    }
+}
+
+static async deleteUserById(userId) {
+    try {
+        return await UserModel.findByIdAndDelete(userId);
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw error;
+    }
+}
+
 
 
 
