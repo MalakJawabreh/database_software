@@ -26,6 +26,8 @@ app.use('/', tripDriverRouter); // الرحلات
 app.use('/', bookTripRoutes); // الحجوزات
 app.use('/', complaint); // الشكاوي
 app.use('/', review); // التقييم
-//app.use('/', adminRoutes);
 app.use('/', adminRoutes); // قم بتحديد المسار `/admin` للوصول إلى التسجيل وتسجيل الدخول
+
+
 module.exports = app;
+ 

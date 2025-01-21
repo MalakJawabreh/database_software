@@ -7,9 +7,8 @@ class AdminService {
     async findAdminByEmail(email) {
         return await Admin.findOne({ email });
     }
-
-   
          async registerAdmin(name,email, password) {
+
             try {
                 // إنشاء بيانات المستخدم
                 const adminData = {name, email, password };

@@ -3,7 +3,9 @@ const adminService = require('../services/admin.services');
 class AdminController {
     // تسجيل إدمن جديد
     async register(req, res) {
+
         try {
+
             const { name, email, password } = req.body;
     
             // التحقق من وجود الإيميل وكلمة المرور في الطلب
@@ -53,10 +55,10 @@ class AdminController {
                     });
                 }
         
-                let tokenData = ({ id: admin._id, role: admin.role });
+                let tokenData = ({ id: admin._id, role: admin.role,email:admin.email,name:admin.name });
                 const token = await adminService.generateToken(tokenData,'secretKey','1h')
         
-                res.status(200).json({status:true,token:token});
+                res.status(200).json({status:true,token:token,role: admin.role,email:admin.email,name:admin.name});
        
             }  catch (error) {
                 console.error(error);

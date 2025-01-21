@@ -7,6 +7,9 @@ const tripController = require('../controller/tripD.controller');
 const BookController = require('../controller/booktripP.controller');
 const complainant=require ('../controller/complaint.controller')
 
+
+console.log('Admin router loaded'); // تحقق من تحميل الراوتر
+
 // تسجيل إدمن جديد
 router.post('/register', adminController.register);
 
