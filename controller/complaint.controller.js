@@ -31,6 +31,35 @@ class ComplaintController {
           return res.status(500).json({ error: 'Error fetching complaints: ' + error.message });
         }
       }
+      static async updateComplaint(req, res) {
+        try {
+          const { id } = req.params;
+          const updatedData = req.body;
+    
+          const updatedComplaint = await ComplaintService.updateComplaint(id, updatedData);
+          return res.status(200).json({
+            message: 'Complaint updated successfully',
+            data: updatedComplaint,
+          });
+        } catch (error) {
+          return res.status(500).json({ error: 'Error updating complaint: ' + error.message });
+        }
+      }
+    
+      static async deleteComplaint(req, res) {
+        try {
+          const { id } = req.params;
+    
+          const deletedComplaint = await ComplaintService.deleteComplaint(id);
+          return res.status(200).json({
+            message: 'Complaint deleted successfully',
+            data: deletedComplaint,
+          });
+        } catch (error) {
+          return res.status(500).json({ error: 'Error deleting complaint: ' + error.message });
+        }
+      }
+    
       
 }
 

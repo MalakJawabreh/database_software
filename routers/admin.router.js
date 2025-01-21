@@ -4,6 +4,8 @@ const adminController = require('../controller/admin.controller');
 const authMiddleware = require('../middleware/adminAuth'); // التحقق من صلاحيات الإدمن
 const userController = require('../controller/user.controller');
 const tripController = require('../controller/tripD.controller');
+const BookController = require('../controller/booktripP.controller');
+const complainant=require ('../controller/complaint.controller')
 
 // تسجيل إدمن جديد
 router.post('/register', adminController.register);
@@ -30,5 +32,13 @@ router.put('/admin/updatetrip/:tripId', authMiddleware, tripController.updateTri
 router.delete('/admin/deletetrip/:tripId', authMiddleware, tripController.deleteTrip);
 
 
+//For book
+router.post('/admin/bookadd', authMiddleware, BookController.createBooking);
+router.put('/admin/editbook/:bookId', authMiddleware, BookController.updateBooking);
+router.delete('/admin/bookdelet/:bookId', authMiddleware, BookController.cancelBooking);
+
+//for Complaint
+router.put('/admin/update-Comp/:compId', authMiddleware, complainant.updateComplaint);
+router.delete('/admin/delete-comp/:compId', authMiddleware, complainant.deleteComplaint);
 
 module.exports = router;
