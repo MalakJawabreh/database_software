@@ -108,6 +108,7 @@ const updateBooking = async (bookingId, updatedData) => {
       // تحديث الحقول
       booking.seat = updatedData.seat !== undefined ? updatedData.seat : booking.seat;
       booking.Note = updatedData.Note !== undefined ? updatedData.Note : booking.Note;
+      booking.pay = updatedData.pay !== undefined ? updatedData.pay : booking.pay;
   
       // حفظ التحديثات في قاعدة البيانات
       await booking.save();

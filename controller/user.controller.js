@@ -216,7 +216,7 @@ exports.getUserDetails = async (req, res, next) => {
     try {
         const { email } = req.query; // الحصول على الإيميل من Query Parameters
 
-        if (!email) {
+        if (!email) { 
             return res.status(400).json({ status: false, error: "Email is required" });
         }
 
@@ -261,6 +261,7 @@ exports.getAllUsers = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+
 exports.getAllPassengers = async (req, res, next) => {
     try {
         const passengers = await UserServices.getAllPassengers();

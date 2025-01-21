@@ -66,7 +66,7 @@ const booktripSchema = new Schema({
         type: String,
         maxlength: [500, 'Note cannot exceed 500 characters'], // قيود على طول النص
     },
-    seat: {
+    seat: { 
         type: Number,
         required: true,
         min: [1, 'Seat number must be at least 1'], // عدد المقاعد يجب أن يكون 1 على الأقل
@@ -78,7 +78,12 @@ const booktripSchema = new Schema({
     NoteRate:{
         type: String,
         required: false, // إذا كان غير مطلوب
-    }
+    },
+    pay: {
+        type: Boolean,
+        required: false,
+        default: false, // القيمة الافتراضية
+    },
 });
 
 const bookTripModel = db.model('BookTrip', booktripSchema);
