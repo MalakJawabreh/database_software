@@ -8,31 +8,35 @@ class AdminService {
         return await Admin.findOne({ email });
     }
 
-    // تسجيل حساب جديد
-    async registerAdmin(adminData) {
-        const { name, email, password } = adminData;
+   
+         async registerAdmin(name,email, password) {
+            try {
+                // إنشاء بيانات المستخدم
+                const adminData = {name, email, password };
+    
+                // إضافة الحقول الخاصة بالسائق إذا كان الدور Driver
 
-        const existingAdmin = await this.findAdminByEmail(email);
-        if (existingAdmin) {
-            throw new Error('Admin already registered with this email.');
+                const createUser = new Admin(adminData);
+                return await createUser.save();
+            } catch (err) {
+                console.error("Error in registering user:", err);
+                throw err;
+            }
         }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newAdmin = new Admin({ name, email, password: hashedPassword });
-        return await newAdmin.save();
+     async checkuser(email) {
+        try {
+            return await Admin.findOne({ email });
+        } catch (error) {
+            throw error;
+        }
     }
-
-    // تسجيل الدخول
-    async loginAdmin(email, password) {
-        const admin = await Admin.findOne({ email });
-        if (!admin) throw new Error('Admin not found');
-        
-        const isMatch = await admin.comparePassword(password);  // استخدام comparePassword هنا
-        if (!isMatch) throw new Error('Invalid credentials');
-      
-        const secretKey = process.env.JWT_SECRET || 'default_secret_key_for_dev';
-        const token = jwt.sign({ id: admin._id, role: admin.role }, secretKey, { expiresIn: '1h' });
-                        return { message: 'Login successful', token };
+ async generateToken(tokenData, secretKey, jwt_expire) {
+        try {
+            return jwt.sign(tokenData, secretKey, { expiresIn: jwt_expire });
+        } catch (error) {
+            console.error("Error in generating token:", error);
+            throw error;
+        }
     }
     
 

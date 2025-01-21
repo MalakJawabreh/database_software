@@ -6,13 +6,14 @@ const adminSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true,
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        trim: true,
+        //trim: true,
+        lowercase: true,
+       
     },
     password: {
         type: String,
@@ -29,19 +30,34 @@ const adminSchema = new mongoose.Schema({
     },
 });
 
-// تشفير كلمة المرور قبل الحفظ
+
+////
 adminSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
+    try {
+        const admin = this;
+
+        if (!admin.isModified('password')) {
+            return next();
+        }
+
+        
+
+        const salt = await bcrypt.genSalt(12);
+        const hashPass = await bcrypt.hash(admin.password, salt);
+        admin.password = hashPass;
+        next();
+    } catch (error) {
+        next(error);
+    }
 });
-
 // التحقق من كلمة المرور
-adminSchema.methods.comparePassword = async function (candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+adminSchema.methods.comparePassword = async function (adminPassword) {
+    try {
+        return await bcrypt.compare(adminPassword, this.password);
+    } catch (error) {
+        throw error;
+    }
 };
-
 const Admin = db.model('Admin', adminSchema);
 
 module.exports = Admin;
