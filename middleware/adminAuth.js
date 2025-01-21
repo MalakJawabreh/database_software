@@ -8,7 +8,7 @@ const adminAuth = (req, res, next) => {
 
     const token = authHeader.split(' ')[1];
     try {
-        const secretKey = process.env.JWT_SECRET || 'default_secret_key_for_dev';
+        const secretKey = process.env.JWT_SECRET || 'secretKey';
         const decoded = jwt.verify(token, secretKey);
 
         if (decoded.role !== 'admin') {
