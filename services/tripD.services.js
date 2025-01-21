@@ -41,7 +41,26 @@ class TripServices {
             throw error;
         }
     }
-
+    static async updateTrip(id, updates) {
+        try {
+            // تحقق من صحة id
+            if (!id) {
+                throw new Error("Trip ID is required.");
+            }
+    
+            // تحديث الرحلة باستخدام id
+            const updatedTrip = await TripModel.findByIdAndUpdate(id, updates, { new: true });
+    
+            if (!updatedTrip) {
+                throw new Error("Trip not found or could not be updated.");
+            }
+    
+            return updatedTrip;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
     // جلب الرحلات الخاصة بالسائق
     static async getDriverTrips(driverEmail) {
         try {
@@ -51,41 +70,32 @@ class TripServices {
         }
     }
 
-    // إضافة دالة لحذف رحلة بناءً على الـ id
-// static async deleteTrip(id) {
-//     try {
-//         const trip = await TripModel.findByIdAndDelete(id);
-//         if (!trip) {
-//             throw new Error('Trip not found.');
-//         }
-//         return trip;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
-static async deleteTrip(id) {
-    try {
-        // العثور على الرحلة المطلوبة
-        const trip = await TripModel.findById(id);
-        if (!trip) {
-            throw new Error('Trip not found.');
+
+    static async deleteTrip(tripId) {
+        try {
+            // البحث عن الرحلة باستخدام tripId
+            const trip = await TripModel.findById(tripId);
+            if (!trip) {
+                throw new Error("Trip not found."); // إذا لم يتم العثور على الرحلة
+            }
+    
+            // حذف الحجوزات المتعلقة بالرحلة (إذا كان هذا جزءًا من المطلوب)
+            await BookTrip.deleteMany({
+                from: trip.from,
+                to: trip.to,
+                date: trip.date,
+                time: trip.time,
+            });
+    
+            // حذف الرحلة
+            await TripModel.findByIdAndDelete(tripId);
+    
+            return { trip, message: "Trip and related bookings deleted successfully." };
+        } catch (error) {
+            throw error; // إعادة تمرير الخطأ إلى الـ Controller
         }
-
-        // حذف الحجوزات المرتبطة بالرحلة
-        await BookTrip.deleteMany({
-            from: trip.from,
-            to: trip.to,
-            date: trip.date,
-            time: trip.time,
-        });
-        // حذف الرحلة نفسها
-        await TripModel.findByIdAndDelete(id);
-
-        return { trip, message: 'Trip and related bookings deleted successfully.' };
-    } catch (error) {
-        throw error;
     }
-}
+    
 
 
 // إضافة دالة لجلب جميع الرحلات لجميع السائقين
