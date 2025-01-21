@@ -144,10 +144,22 @@ const updateBooking = async (bookingId, updatedData) => {
       throw new Error(error.message);
     }
   };
+  const getBookingById = async (bookingId) => {
+    try {
+        const booking = await BookTrip.findById(bookingId);
+        if (!booking) {
+            throw new Error("Booking not found.");
+        }
+        return booking;
+    } catch (error) {
+        throw error;
+    }
+};
 
 module.exports = {
     createBooking,
     getAllBookings,
+    getBookingById,
     getPassengersByTrip,
     getBookingsByEmail2,
     cancelBooking,

@@ -33,36 +33,44 @@ exports.getDriverTrips = async (req, res) => {
     }
 };
 
-// // حذف رحلة بناءً على الـ id
-// exports.deleteTrip = async (req, res) => {
-//     try {
-//         const { id } = req.params; // الـ id سيتم تمريره في URL
-//         if (!id) {
-//             return res.status(400).json({ status: false, error: "Trip ID is required." });
-//         }
 
-//         const deletedTrip = await TripServices.deleteTrip(id);
-//         res.status(200).json({ status: true, message: "Trip deleted successfully.", deletedTrip });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(400).json({ status: false, error: error.message });
-//     }
-// };
 
 exports.deleteTrip = async (req, res) => {
     try {
-        const { id } = req.params; // الـ id يتم تمريره في URL
-        if (!id) {
+        const { tripId } = req.params; // الحصول على tripId من req.params
+        if (!tripId) {
             return res.status(400).json({ status: false, error: "Trip ID is required." });
         }
 
-        const result = await TripServices.deleteTrip(id);
+        // استدعاء الخدمة لحذف الرحلة
+        const result = await TripServices.deleteTrip(tripId);
+
         res.status(200).json({ status: true, message: result.message, deletedTrip: result.trip });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
+
+exports.updateTrip = async (req, res) => {
+    try {
+        const { tripId } = req.params; // تعديل الاسم ليطابق الرابط
+        console.log("Request Params:", req.params); // إضافة تسجيل لمعرفة ما يتم استلامه
+
+        const updates = req.body;
+
+        if (!tripId) {
+            return res.status(400).json({ status: false, error: "Trip ID is required." });
+        }
+
+        const updatedTrip = await TripServices.updateTrip(tripId, updates);
+        res.status(200).json({ status: true, updatedTrip });
     } catch (error) {
         console.error(error);
         res.status(400).json({ status: false, error: error.message });
     }
 };
+
 
 
 

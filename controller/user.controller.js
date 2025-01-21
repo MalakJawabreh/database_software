@@ -276,5 +276,58 @@ exports.getAllPassengers = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+exports.addUser = async (req, res, next) => {
+    try {
+        const { profilePicture, fullName, email, location, password, phoneNumber, gender, role, licensePicture, InsurancePicture, carNumber, carType } = req.body;
+
+        if (role === 'Driver' && (!carNumber || !carType)) {
+            return res.status(400).json({ status: false, error: "Vehicle details are required for drivers." });
+        }
+
+        const userData = { profilePicture, fullName, email, location, password, phoneNumber, gender, role, licensePicture, InsurancePicture, carNumber, carType };
+        const newUser = await UserServices.addUser(userData);
+
+        res.status(201).json({ status: true, success: "User added successfully.", user: newUser });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
+exports.updateUser = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        const updateData = req.body;
+
+        const updatedUser = await UserServices.updateUserById(userId, updateData);
+
+        if (!updatedUser) {
+            return res.status(404).json({ status: false, error: "User not found." });
+        }
+
+        res.status(200).json({ status: true, success: "User updated successfully.", user: updatedUser });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
+exports.deleteUser = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+
+        const deletedUser = await UserServices.deleteUserById(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ status: false, error: "User not found." });
+        }
+
+        res.status(200).json({ status: true, success: "User deleted successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
 
 
