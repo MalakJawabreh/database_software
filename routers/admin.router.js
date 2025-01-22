@@ -10,19 +10,19 @@ const complainant=require ('../controller/complaint.controller')
 
 console.log('Admin router loaded'); // تحقق من تحميل الراوتر
 
-// تسجيل إدمن جديد
+//   register new admin
 router.post('/register', adminController.register);
 
-// تسجيل الدخول
+// login admin
 router.post('/loginadmin', adminController.login);
 
-// جلب جميع الإدمنين
+// get all admin
 router.get('/admins', authMiddleware, adminController.getAllAdmins);
 
-// تعديل بيانات إدمن
+//  update info for admin
 router.put('/admins/:id', authMiddleware, adminController.updateAdmin);
 
-// حذف إدمن
+// delete Admin
 router.delete('/admins/:id', authMiddleware, adminController.deleteAdmin);
 //add or edit or remove user - driver or passenger
 router.post('/admin/add-user', authMiddleware, userController.addUser);
@@ -43,5 +43,10 @@ router.delete('/admin/bookdelet/:bookId', authMiddleware, BookController.cancelB
 //for Complaint
 router.put('/admin/update-Comp/:compId', authMiddleware, complainant.updateComplaint);
 router.delete('/admin/delete-comp/:compId', authMiddleware, complainant.deleteComplaint);
+
+//  show  statistics for trips
+router.get('/admin/statistics',authMiddleware, tripController.getTripStatistics);
+//for completed Trips Only 
+router.get('/admin/completedcount',authMiddleware, tripController.getCompletedTripsCount);
 
 module.exports = router;

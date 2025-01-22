@@ -136,5 +136,27 @@ exports.getTripsByGender = async (req, res) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+// جلب إحصائيات الرحلات
+exports.getTripStatistics = async (req, res) => {
+    try {
+        const stats = await TripServices.getTripStatistics();
+        res.status(200).json({ status: true, stats });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
+// جلب عدد الرحلات المكتملة فقط
+exports.getCompletedTripsCount = async (req, res) => {
+    try {
+        const completedTripsCount = await TripServices.getCompletedTripsCount();
+        res.status(200).json({ status: true, completedTripsCount });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ status: false, error: error.message });
+    }
+};
+
+
 
 

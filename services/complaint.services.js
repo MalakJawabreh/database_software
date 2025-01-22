@@ -41,6 +41,8 @@ class ComplaintService {
       throw new Error('Error deleting complaint: ' + error.message);
     }
   }
+
+
 }
 
 
