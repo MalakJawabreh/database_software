@@ -13,6 +13,7 @@ router.get("/getuser", UserController.getUserDetails);
 router.post('/update_location', UserController.updatelocation);
 router.get('/all_driver', UserController.getAllDrivers);
 router.get('/all_passenger', UserController.getAllPassengers);
+router.get('/count_user', UserController.getTotalUsers);
 
 module.exports = router;
 

@@ -14,6 +14,8 @@ router.delete('/delete_trip/:id', TripController.deleteTrip);
 router.get('/all_trip', TripController.getAllTrips);
 router.get('/filtered_trips', TripController.getFilteredTrips);
 router.get('/getTripsByGender/:userId', TripController.getTripsByGender);
+router.get('/getTripStatistics', TripController.getTripStatistics);
+
 
 module.exports = router;
 //new

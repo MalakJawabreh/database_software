@@ -155,15 +155,15 @@ static async getAllTrips(filter = {}) {
     static async getTripStatistics() {
         try {
             const totalTrips = await TripModel.countDocuments(); // عدد جميع الرحلات
-            const upcomingTrips = await TripModel.countDocuments({ status_trip: 'upcoming' }); // عدد الرحلات القادمة
-            const completedTrips = await TripModel.countDocuments({ status_trip: 'completed' }); // عدد الرحلات المكتملة
-            const cancelledTrips = await TripModel.countDocuments({ status_trip: 'cancelled' }); // عدد الرحلات الملغاة
+            // const upcomingTrips = await TripModel.countDocuments({ status_trip: 'upcoming' }); // عدد الرحلات القادمة
+            // const completedTrips = await TripModel.countDocuments({ status_trip: 'completed' }); // عدد الرحلات المكتملة
+            // const cancelledTrips = await TripModel.countDocuments({ status_trip: 'cancelled' }); // عدد الرحلات الملغاة
       
             return {
                 totalTrips,
-                upcomingTrips,
-                completedTrips,
-                cancelledTrips
+                // upcomingTrips,
+                // completedTrips,
+                // cancelledTrips
             };
         } catch (error) {
             throw error;

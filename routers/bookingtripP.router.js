@@ -15,6 +15,9 @@ router.get('/passengers', bookTripController.getPassengersByTrip);
 router.delete('/delete_book/:id', bookTripController.cancelBooking);
 router.put('/update_booking/:id', bookTripController.updateBooking);
 router.put('/update_Booking_Rate/:id', bookTripController.updateBookingRate);
+router.get('/BookingsCountByDate', bookTripController.getNewBookingsCountByDate);
+
+
 
 
 

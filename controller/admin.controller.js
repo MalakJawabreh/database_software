@@ -55,7 +55,7 @@ class AdminController {
                     });
                 }
         
-                let tokenData = ({ id: admin._id, role: admin.role,email:admin.email,name:admin.name });
+                let tokenData = ({ id: admin._id, role: admin.role,email:admin.email,name:admin.name});
                 const token = await adminService.generateToken(tokenData,'secretKey','1h')
         
                 res.status(200).json({status:true,token:token,role: admin.role,email:admin.email,name:admin.name});

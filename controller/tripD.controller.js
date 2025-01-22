@@ -140,6 +140,7 @@ exports.getTripsByGender = async (req, res) => {
 exports.getTripStatistics = async (req, res) => {
     try {
         const stats = await TripServices.getTripStatistics();
+        console.log('Trip Statistics:', stats);
         res.status(200).json({ status: true, stats });
     } catch (error) {
         console.error(error);
