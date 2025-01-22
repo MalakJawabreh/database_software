@@ -227,6 +227,24 @@ static async deleteUserById(userId) {
         throw error;
     }
 }
+static async getTotalUsers() {
+    try {
+        return await UserModel.countDocuments(); // Counts all users
+    } catch (error) {
+        console.error('Error fetching total users:', error);
+        throw error;
+    }
+}
+
+static async getActiveUsers() {
+    try {
+        return await UserModel.countDocuments({ active: true }); // Counts only active users
+    } catch (error) {
+        console.error('Error fetching active users:', error);
+        throw error;
+    }
+}
+
 
 
 

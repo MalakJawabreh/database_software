@@ -5,10 +5,10 @@ const authMiddleware = require('../middleware/adminAuth'); // التحقق من 
 const userController = require('../controller/user.controller');
 const tripController = require('../controller/tripD.controller');
 const BookController = require('../controller/booktripP.controller');
-const complainant=require ('../controller/complaint.controller')
+const complainant = require ('../controller/complaint.controller')
 
 
-console.log('Admin router loaded'); // تحقق من تحميل الراوتر
+console.log('Admin router loaded'); 
 
 //   register new admin
 router.post('/register', adminController.register);
@@ -28,13 +28,10 @@ router.delete('/admins/:id', authMiddleware, adminController.deleteAdmin);
 router.post('/admin/add-user', authMiddleware, userController.addUser);
 router.put('/admin/update-user/:userId', authMiddleware, userController.updateUser);
 router.delete('/admin/delete-user/:userId', authMiddleware, userController.deleteUser);
-
 //For Trips
 router.post('/admin/addtrip', authMiddleware, tripController.createTrip);
 router.put('/admin/updatetrip/:tripId', authMiddleware, tripController.updateTrip);
 router.delete('/admin/deletetrip/:tripId', authMiddleware, tripController.deleteTrip);
-
-
 //For book
 router.post('/admin/bookadd', authMiddleware, BookController.createBooking);
 router.put('/admin/editbook/:bookId', authMiddleware, BookController.updateBooking);
@@ -48,5 +45,18 @@ router.delete('/admin/delete-comp/:compId', authMiddleware, complainant.deleteCo
 router.get('/admin/statistics',authMiddleware, tripController.getTripStatistics);
 //for completed Trips Only 
 router.get('/admin/completedcount',authMiddleware, tripController.getCompletedTripsCount);
+
+//show total and active users
+router.get('/admin/total-users',authMiddleware, userController.getTotalUsers);
+router.get('/admin/active-users',authMiddleware, userController.getActiveUsers);
+//show number of complainant
+router.get('/admin/complaintscount',authMiddleware, complainant.getComplaintCount);
+//show number of booking new
+router.get('/admin/newbook',authMiddleware, BookController.getNewBookingsCountByDate);
+// show Cancelled Bookings Count
+router.get('/admin/CancelledBookingsCount',authMiddleware, BookController.getCancelledBookingsCount);
+//show Cancelled Bookings info 
+
+router.get('/admin/Cancelled-Bookings',authMiddleware, BookController.getCancelledBookings);
 
 module.exports = router;

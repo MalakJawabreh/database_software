@@ -328,6 +328,26 @@ exports.deleteUser = async (req, res, next) => {
         res.status(400).json({ status: false, error: error.message });
     }
 };
+exports.getTotalUsers = async (req, res, next) => {
+    try {
+        const totalUsers = await UserServices.getTotalUsers();
+        res.status(200).json({ status: true, totalUsers });
+    } catch (error) {
+        console.error('Error fetching total users:', error);
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
+
+exports.getActiveUsers = async (req, res, next) => {
+    try {
+        const activeUsers = await UserServices.getActiveUsers();
+        res.status(200).json({ status: true, activeUsers });
+    } catch (error) {
+        console.error('Error fetching active users:', error);
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
+
 
 
 

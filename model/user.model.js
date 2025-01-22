@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
+   
     profilePicture: {
         type: String,
         required: false
@@ -62,6 +63,11 @@ const userSchema = new Schema({
     carType: {
         type: String,
         required: function () { return this.role === 'Driver'; },
+    },
+    active: {
+        required: false,
+        type: Boolean,
+        default: true // Default value set to true
     },
     blockedUsers: [{
         type: Schema.Types.ObjectId, // يشير إلى معرف المستخدم

@@ -59,6 +59,18 @@ class ComplaintController {
           return res.status(500).json({ error: 'Error deleting complaint: ' + error.message });
         }
       }
+      static async getComplaintCount(req, res) {
+        try {
+          const count = await ComplaintService.getComplaintCount();
+          return res.status(200).json({
+            message: 'Complaint count fetched successfully',
+            count: count,
+          });
+        } catch (error) {
+          return res.status(500).json({ error: 'Error fetching complaint count: ' + error.message });
+        }
+      }
+      
     
       
 }

@@ -84,6 +84,12 @@ const booktripSchema = new Schema({
         required: false,
         default: false, // القيمة الافتراضية
     },
+    cancelled: {
+        type: Boolean,
+        required: false,
+        default: false  // القيمة الافتراضية هي أن الحجز غير ملغى
+    }
+    
 });
 
 const bookTripModel = db.model('BookTrip', booktripSchema);

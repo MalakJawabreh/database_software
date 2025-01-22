@@ -155,9 +155,47 @@ const updateBooking = async (bookingId, updatedData) => {
         throw error;
     }
 };
+const getNewBookingsCountByDate = async () => {
+    try {
+        // تحديد التاريخ الحالي
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0); // تعيين الوقت إلى منتصف الليل
+
+        // البحث عن الحجوزات التي تم إنشاؤها بعد بداية اليوم (أو بعد تاريخ معين)
+        const count = await BookTrip.countDocuments({ date: { $gte: currentDate } });
+
+        return count;
+    } catch (error) {
+        throw new Error("Error fetching new bookings count by date: " + error.message);
+    }
+};
+// دالة للحصول على عدد الحجوزات الملغاة
+const getCancelledBookingsCount = async () => {
+    try {
+        const count = await BookTrip.countDocuments({ cancelled: true });  // تأكد من إضافة هذا الحقل في النموذج
+        return count;
+    } catch (error) {
+        throw new Error("Error fetching cancelled bookings count: " + error.message);
+    }
+};
+// دالة للحصول على الحجوزات الملغاة
+const getCancelledBookings = async () => {
+    try {
+        const cancelledBookings = await BookTrip.find({ cancelled: true });  // تأكد من إضافة هذا الحقل في النموذج
+        return cancelledBookings;
+    } catch (error) {
+        throw new Error("Error fetching cancelled bookings: " + error.message);
+    }
+};
+
+
+
 
 module.exports = {
     createBooking,
+    getNewBookingsCountByDate,
+    getCancelledBookings,
+    getCancelledBookingsCount,
     getAllBookings,
     getBookingById,
     getPassengersByTrip,

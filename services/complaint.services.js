@@ -41,6 +41,15 @@ class ComplaintService {
       throw new Error('Error deleting complaint: ' + error.message);
     }
   }
+  static async getComplaintCount() {
+    try {
+      const count = await Complaint.countDocuments();
+      return count;
+    } catch (error) {
+      throw new Error('Error counting complaints: ' + error.message);
+    }
+  }
+  
 
 
 }

@@ -98,6 +98,36 @@ const updateBooking = async (req, res) => {
       res.status(500).json({ status: false, error: error.message });
     }
   };
+
+  // مثال لاستخدام هذه الدوال في الـ Controller
+  const getNewBookingsCountByDate = async (req, res) => {
+    try {
+        const count = await bookTripService.getNewBookingsCountByDate();
+        res.status(200).json({ status: true, count });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
+
+
+const getCancelledBookingsCount = async (req, res) => {
+    try {
+        const count = await bookTripService.getCancelledBookingsCount();
+        res.status(200).json({ status: true, count });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
+
+const getCancelledBookings = async (req, res) => {
+    try {
+        const cancelledBookings = await bookTripService.getCancelledBookings();
+        res.status(200).json({ status: true, cancelledBookings });
+    } catch (error) {
+        res.status(500).json({ status: false, error: error.message });
+    }
+};
+
   
 
  
@@ -105,6 +135,9 @@ const updateBooking = async (req, res) => {
 
 module.exports = {
     createBooking,
+    getNewBookingsCountByDate,
+    getCancelledBookings,
+    getCancelledBookingsCount,
     getAllBookings,
     getBookingsByEmail,
     getPassengersByTrip,
