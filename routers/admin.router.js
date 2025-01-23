@@ -23,7 +23,7 @@ router.get('/admins', authMiddleware, adminController.getAllAdmins);
 router.put('/admins/:id', authMiddleware, adminController.updateAdmin);
 
 // delete Admin
-router.delete('/admins/:id', authMiddleware, adminController.deleteAdmin);
+router.delete('/adminsdelete/:id', authMiddleware, adminController.deleteAdmin);
 //add or edit or remove user - driver or passenger
 router.post('/admin/add-user', authMiddleware, userController.addUser);
 router.put('/admin/update-user/:userId', authMiddleware, userController.updateUser);
